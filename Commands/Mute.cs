@@ -1,4 +1,4 @@
-﻿using CommandSystem;
+using CommandSystem;
 using RemoteAdmin;
 using System;
 using Player = Exiled.API.Features.Player;
@@ -12,21 +12,20 @@ namespace SimpleTextChat.Commands
 
         public string[] Aliases => Array.Empty<string>();
 
-        public string Description => "Mutes a player (or unmutes).";
-
+        public string Description => "Stummschaltet einen Spieler (oder hebt die Stummschaltung auf)."; // Übersetzt
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (sender is not PlayerCommandSender)
             {
-                response = "No";
+                response = "Nein"; // Übersetzt
                 return false;
             }
 
             Player player = Player.Get(sender);
             if (arguments.IsEmpty())
             {
-                response = "You didn't write any username.";
+                response = "Du hast keinen Benutzernamen eingegeben."; // Übersetzt
                 return false;
             }
 
@@ -49,11 +48,11 @@ namespace SimpleTextChat.Commands
 
             if (target == null)
             {
-                response = "Found no player with that name.";
+                response = "Kein Spieler mit diesem Namen gefunden."; // Übersetzt
                 return false;
             }
 
-            response = "Done! Muted that player.";
+            response = "Fertig! Spieler wurde stummgeschaltet."; // Übersetzt
             if (!Plugin.Instance.MutedPlayers.TryGetValue(player.UserId, out var mutedPlayers))
             {
                 Plugin.Instance.MutedPlayers.Add(player.UserId, new() { target.UserId });
@@ -63,7 +62,7 @@ namespace SimpleTextChat.Commands
             if (mutedPlayers.Contains(target.UserId))
             {
                 Plugin.Instance.MutedPlayers[player.UserId].Remove(target.UserId);
-                response = "Done! Unmuted that player.";
+                response = "Fertig! Spieler wurde entstummschaltet."; // Übersetzt
                 return true;
             }
 
@@ -75,3 +74,4 @@ namespace SimpleTextChat.Commands
 
 // please note that all of this is old code, didnt bother for shit to fix it
 // literally just ctrl c ctrl v
+// ALL CREDITS TO warden161
