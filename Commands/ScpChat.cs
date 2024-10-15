@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -19,20 +19,20 @@ namespace SimpleTextChat.Commands
 
         public string[] Aliases => new string[] { "schat" };
 
-        public string Description => "Sends a message.";
+        public string Description => "Sendet eine Nachricht.";
 
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (sender is not PlayerCommandSender)
             {
-                response = "Must send from client";
+                response = "Muss vom Client gesendet werden";
                 return false;
             }
 
             if (arguments.Count < 1)
             {
-                response = "Command usage: .scpchat <message>";
+                response = "Benutzung des Befehls: .scpchat <Nachricht>";
                 return false;
             }
 
@@ -41,25 +41,25 @@ namespace SimpleTextChat.Commands
 
             if (player.IsMuted)
             {
-                response = "You are muted.";
+                response = "Du bist stummgeschaltet.";
                 return false;
             }
 
             if (!player.IsScp)
             {
-                response = "You're not an SCP.";
+                response = "\"Du bist kein SCP.";
                 return false;
             }
 
             float duration = 3;
             if (message.Length > Plugin.Instance.Config.MaxCharacters)
             {
-                response = $"Too long message (exceeded {Plugin.Instance.Config.MaxCharacters} characters).";
+                response = $"Zu lange Nachricht (überschreitet {Plugin.Instance.Config.MaxCharacters} Zeichen).";
                 return false;
             }
 
-            if (message.Length > 30)
-                duration = message.Length / 10;
+            if (message.Length > 15)
+                duration = Plugin.Instance.Config.MessageDuration; // Verwende die konfigurierbare Dauer
 
             var display = $"<b><color={player.Role.Color.ToHex()}>{player.Nickname}</color></b> (<color={player.Role.Color.ToHex()}>{player.Role.Name}</color>)\n";
 
@@ -68,10 +68,10 @@ namespace SimpleTextChat.Commands
                 if (Plugin.Instance.HasPlayerMuted(scp, player))
                     continue;
 
-                scp.ShowHint($"[<b><color=red>SCP Chat</color></b>]\n{display}\n{message.Replace("<size", "")}\n<size=15>You can mute a player using <color=red>.mute playername</color> in your console or <color=red>.disablechat</color></size>", duration);
+                scp.ShowHint($"[<b><color=red>SCP Chat</color></b>]\n{display}\n{message.Replace("<size", "")}\n<size=15>Du kannst einen Spieler mit <color=red>.mute Spielernamen</color> in deiner Konsole oder <color=red>.disablechat</color> stummschalten</size>", duration);
             }
 
-            response = "Sent!";
+            response = "Gesendet!";
             return true;
         }
     }
