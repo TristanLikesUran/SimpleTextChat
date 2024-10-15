@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -19,14 +19,13 @@ namespace SimpleTextChat.Commands
 
         public string[] Aliases => Array.Empty<string>();
 
-        public string Description => "Fully disables text chat.";
-
+        public string Description => "Deaktiviert den Text-Chat vollständig."; // Übersetzt
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (sender is not PlayerCommandSender)
             {
-                response = "No";
+                response = "Nein"; // Übersetzt
                 return false;
             }
 
@@ -36,12 +35,12 @@ namespace SimpleTextChat.Commands
             {
                 Plugin.Instance.DisabledTextChat.Remove(player.UserId);
 
-                response = "Re-enabled text chat!";
+                response = "Text-Chat wieder aktiviert!"; // Übersetzt
                 return true;
             }
 
             Plugin.Instance.DisabledTextChat.Add(player.UserId);
-            response = "Disabled text chat!";
+            response = "Text-Chat deaktiviert!"; // Übersetzt
             return true;
         }
     }
@@ -49,3 +48,4 @@ namespace SimpleTextChat.Commands
 
 // please note that all of this is old code, didnt bother for shit to fix it
 // literally just ctrl c ctrl v
+// ALL CREDITS TO warden161
