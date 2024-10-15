@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -20,20 +20,19 @@ namespace SimpleTextChat.Commands
 
         public string[] Aliases => new string[] { "proximitychat" };
 
-        public string Description => "Sends a message.";
-
+        public string Description => "Sendet eine Nachricht."; // Übersetzt
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (sender is not PlayerCommandSender)
             {
-                response = "Must send from client";
+                response = "Muss vom Client gesendet werden"; // Übersetzt
                 return false;
             }
 
             if (arguments.Count < 1)
             {
-                response = "Command usage: .chat <message>";
+                response = "Benutzung des Befehls: .chat <Nachricht>"; // Übersetzt
                 return false;
             }
 
@@ -43,29 +42,30 @@ namespace SimpleTextChat.Commands
 
             if (chatter.IsMuted)
             {
-                response = "You are muted.";
+                response = "Du bist stummgeschaltet."; // Übersetzt
                 return false;
             }
 
             if (message.Length > Plugin.Instance.Config.MaxCharacters)
             {
-                response = $"Too long message (exceeded {Plugin.Instance.Config.MaxCharacters} characters).";
+                response = $"Zu lange Nachricht (überschreitet {Plugin.Instance.Config.MaxCharacters} Zeichen)."; // Übersetzt
                 return false;
             }
 
-            if (message.Length > 30)
-                duration = message.Length / 10;
+            if (message.Length > 15)
+                duration = Plugin.Instance.Config.MessageDuration; // Verwende die konfigurierbare Dauer
 
             if (!chatter.IsAlive)
             {
                 foreach (Player player in Player.List.Where(x => x.IsDead))
                 {
                     if (Plugin.Instance.HasPlayerMuted(player, chatter))
+                        continue; // Zeile hinzugefügt, um sicherzustellen, dass der Code hier nicht weitergeht
 
-                    player.Broadcast((ushort)duration, message: $"<size=25>[<b><color=orange>Spectator Chat</color></b>] <b><color=yellow>{chatter.Nickname}</color></b></size>\n<size=35>{message.Replace("<size", "")}</size>\n\n<size=15>You can mute a player using <color=red>.mute playername</color> in your console or <color=red>.disablechat</color></size>");
+                    player.Broadcast((ushort)duration, message: $"<size=25>[<b><color=orange>Spectator Chat</color></b>] <b><color=yellow>{chatter.Nickname}</color></b></size>\n<size=35>{message.Replace("<size", "")}</size>\n\n<size=15>Du kannst einen Spieler mit <color=red>.mute playername</color> in deiner Konsole oder <color=red>.disablechat</color> stummschalten</size>"); // Übersetzt
                 }
 
-                response = "Sent to spectator chat!";
+                response = "An den Zuschauer-Chat gesendet!"; // Übersetzt
                 return false;
             }
 
@@ -79,11 +79,11 @@ namespace SimpleTextChat.Commands
                 if (Plugin.Instance.HasPlayerMuted(player, chatter))
                     continue;
 
-                if (MeetsProximityCondition(player, chatter) || (player.Role.Is(out SpectatorRole role) && role.SpectatedPlayer != null && MeetsProximityCondition(role.SpectatedPlayer, chatter)))
-                    player.ShowHint($"[<b><color=yellow>Proximity Chat</color></b>] <b>{display}</b>\n{message.Replace("<size", "")}\n\n<size=15>You can mute a player using <color=red>.mute playername</color> in your console or <color=red>.disablechat</color></size>", duration);
+                if (MeetsProximityCondition(player, chatter) || (player.Role.Is(out SpectatorRole role) && role.SpectatedPlayer != null && MeetsProximityCondition(role.SpectatedPlayer, chatter)))
+                    player.ShowHint($"[<b><color=yellow>Proximity Chat</color></b>] <b>{display}</b>\n{message.Replace("<size", "")}\n\n<size=15>Du kannst einen Spieler mit <color=red>.mute playername</color> in deiner Konsole oder <color=red>.disablechat</color> stummschalten</size>", duration); // Übersetzt
             }
 
-            response = "Sent!";
+            response = "Gesendet!"; // Übersetzt
             return true;
         }
 
